@@ -32,10 +32,10 @@ Temporary Items
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 .idea/.gitignore
-.idea/inspectionProfiles/profiles_settings.xml
+.idea/inspectionProfiles/*
 .idea/misc.xml
 .idea/modules.xml
-.idea/simple-falcon-tutorial.iml
+.idea/sqlalchemy-playground.iml
 .idea/vcs.xml
 
 # User-specific stuff
