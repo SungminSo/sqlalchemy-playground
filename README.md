@@ -3,4 +3,4 @@ sqlalchemy의 이것저것
 
 
 ## Notes
-```https://docs.sqlalchemy.org/en/14/orm/tutorial.html```
+```https://docs.sqlalchemy.org/en/13/orm/tutorial.html```
