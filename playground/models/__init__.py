@@ -30,3 +30,8 @@ Session = sessionmaker(bind=engine)
 # Session = sessionmaker()
 # engine 생성 이후
 # Session.configure(bind=engine)
+
+
+def init_db():
+    # DB 테이블 생성
+    Base.metadata.create_all(engine)

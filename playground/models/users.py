@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, Sequence
-
-from playground.models import Base
+from playground.models import Base, init_db
 from playground.utils.time import utcnow
 
 
@@ -26,3 +25,6 @@ class User(Base):
 
     def __repr__(self):
         return f"<User(name={self.name}, nickname={self.nickname})>"
+
+
+init_db()
