@@ -6,4 +6,4 @@
 
 
 # postgresql
-DATABASE = {"engine": "postgresql+psycopg2://postgres:password@localhost:5432/playground", "echo": True}
+DATABASE = {"engine": "postgresql+psycopg2://postgres:password@localhost:5432/playground", "echo": False}
