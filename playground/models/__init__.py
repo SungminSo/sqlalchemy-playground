@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # use in-memory-only SQLite db
-engine = create_engine('sqlite:///:memory', echo=True)
+engine = create_engine('postgresql+psycopg2://postgres:password@localhost:5432/playground', echo=True)
 # echo : SQLAlchemy logging flag
 # lazy connecting : create_engine의 return은 db와의 실제 연결이 아니다. 첫 액션(쿼리 등) 수행 시 db와 실제 연결됨
 

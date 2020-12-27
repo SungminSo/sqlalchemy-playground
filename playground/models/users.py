@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Sequence
 
-from ..models import Base
-from ..utils.time import utcnow
+from playground.models import Base
+from playground.utils.time import utcnow
 
 
 class User(Base):

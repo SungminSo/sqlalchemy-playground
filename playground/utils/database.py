@@ -1,6 +1,9 @@
-from ..models import Session
+from contextlib import contextmanager
+
+from playground.models import Session
 
 
+@contextmanager
 def transaction():
     session = Session()
     try:
@@ -13,6 +16,7 @@ def transaction():
         session.close()
 
 
+@contextmanager
 def orm_session():
     session = Session()
     yield session
