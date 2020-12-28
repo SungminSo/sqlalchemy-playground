@@ -45,7 +45,27 @@ def limit_and_offset():
             print(u)
 
 
+def filter_and_filter_by():
+    with orm_session() as session:
+        start_time = time.time()
+
+        # filter_by() : keyword arguments 사용
+        name = session.query(User.name).filter_by(nickname='eddie')
+        print(name)
+
+        middle_time = time.time()
+        print(middle_time - start_time)
+
+        # filter() : SQL expression language 사용. 매핑한 클래스에서 정의한 속성 및 파이썬 연산자 사용 가능
+        name = session.query(User.name).filter(User.nickname == 'eddie')
+        print(name)
+
+        print(time.time() - middle_time)
+        # 걸리는 시간 비교 결과: 2번 방법이 더 빠름
+
+
 if __name__ == '__main__':
     # get_list_query()
     # alias()
-    limit_and_offset()
+    # limit_and_offset()
+    filter_and_filter_by()
