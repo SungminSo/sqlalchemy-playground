@@ -64,8 +64,97 @@ def filter_and_filter_by():
         # 걸리는 시간 비교 결과: 2번 방법이 더 빠름
 
 
+def common_filter_op():
+    with orm_session() as session:
+        # Query 객체는 새로운 Query 객체 반환 => 이중 filter 가능
+        check_time = time.time()
+        name = session.query(User)\
+            .filter(User.name == 'ed')\
+            .filter(User.nickname == 'eddie')
+        print(name)
+        print(time.time() - check_time)
+
+        # common operators used in filter()
+
+        # ColumnOperators.__eq__() : equals
+        check_time = time.time()
+        print(session.query(User).filter(User.name == 'ed'))
+        print(time.time() - check_time)
+
+        # ColumnOperators.__ne__() : not equals
+        check_time = time.time()
+        print(session.query(User).filter(User.name != 'ed'))
+        print(time.time() - check_time)
+
+        # ColumnOperators.like() : like
+        check_time = time.time()
+        print(session.query(User).filter(User.name.like('%ed%')))
+        print(time.time() - check_time)
+
+        # like는 어떤 백엔드인지에 따라 case-sensitive 여부가 다름
+        # case-insensitive를 위해서는 ColumnOperators.ilike()를 사용할 것
+        # ColumnOperators.ilike() : case-insensitive like
+        check_time = time.time()
+        print(session.query(User).filter(User.name.ilike('%ed%')))
+        print(time.time() - check_time)
+
+        # ColumnOperators.in_() : in
+        check_time = time.time()
+        print(session.query(User).filter(User.name.in_(['ed', 'wendy', 'jack'])))
+        print(time.time() - check_time)
+        # 이중 쿼리도 가능
+        check_time = time.time()
+        print(session.query(User).filter(User.name.in_(
+            session.query(User.name).filter(User.name.like('%ed%'))
+        )))
+        print(time.time() - check_time)
+
+        # multi-column을 위한 tuple 사용 가능
+        from sqlalchemy import tuple_
+        check_time = time.time()
+        print(session.query(User).filter(
+            tuple_(User.name, User.nickname)
+            .in_([('ed', 'eddie'), ('wendy', 'windy')])
+        ))
+        print(time.time() - check_time)
+
+        # ColumnOperators.notin_(): not in
+        check_time = time.time()
+        print(session.query(User).filter(~User.name.in_(['ed', 'wendy', 'jack'])))
+        print(time.time() - check_time)
+
+        # ColumnOperators.is_() : is
+        check_time = time.time()
+        print(session.query(User).filter(User.name.is_(None)))
+        print(time.time() - check_time)
+
+        # ColumnOperators.isnot() : is not
+        check_time = time.time()
+        print(session.query(User).filter(User.name.isnot(None)))
+        print(time.time() - check_time)
+
+        # AND
+        from sqlalchemy import and_
+        check_time = time.time()
+        print(session.query(User).filter(and_(User.name == 'ed', User.nickname == 'eddie')))
+        print(session.query(User).filter(User.name == 'ed', User.nickname == 'eddie'))
+        print(time.time() - check_time)
+
+        # OR
+        from sqlalchemy import or_
+        check_time = time.time()
+        print(session.query(User).filter(or_(User.name == 'ed', User.name == 'wendy')))
+        print(time.time() - check_time)
+
+        # ColumnOperators.match() : match
+        check_time = time.time()
+        print(session.query(User).filter(User.name.match('wendy')))
+        print(time.time() - check_time)
+
+
 if __name__ == '__main__':
     # get_list_query()
     # alias()
     # limit_and_offset()
-    filter_and_filter_by()
+    # filter_and_filter_by()
+    common_filter_op()
