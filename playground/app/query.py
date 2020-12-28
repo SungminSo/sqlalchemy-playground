@@ -152,9 +152,55 @@ def common_filter_op():
         print(time.time() - check_time)
 
 
+def scalars():
+    with orm_session() as session:
+        check_time = time.time()
+        # Query.first() : 가장 첫번째것을 반환
+        print(session.query(User).first())
+        print('first():', time.time() - check_time)
+        # 만약 찾고자 하는 record가 없다면? -> None 반환
+        check_time = time.time()
+        print(session.query(User).filter(User.name == 'asdf').first())
+        print(time.time() - check_time)
+
+        # Query.one() : 해당 테이블의 모든 row를 fetch. 단 하나의 record가 있다면 반환
+        check_time = time.time()
+        print(session.query(User).filter(User.name == 'ed').one())
+        print('one():', time.time() - check_time)
+        # 2개 이상의 record가 있다면? -> sqlalchemy.orm.exc.MultipleResultsFound: Multiple rows were found for one()
+        # print(session.query(User).one())
+        # record가 하나도 없다면? -> sqlalchemy.orm.exc.NoResultFound: No row was found for one()
+        # print(session.query(User).filter(User.id == 1000).one())
+
+        # Query.one_or_none() : 해당하는 record가 하나있으면 반환 또는 없다면 None 반환
+        check_time = time.time()
+        print(session.query(User).filter(User.name == 'ed').one_or_none())
+        print('one_or_none():', time.time() - check_time)
+        # 2개 이상의 record가 있다면? -> sqlalchemy.orm.exc.MultipleResultsFound: Multiple rows were found for one_or_none()
+        # print(session.query(User).one_or_none())
+        # record가 하나도 없다면? -> None
+        check_time = time.time()
+        print(session.query(User).filter(User.id == 1000).one_or_none())
+        print(time.time() - check_time)
+
+        # Query.scalar() : Query.one을 호출하고 성공 시 첫번째 칼럼 반환
+        check_time = time.time()
+        print(session.query(User).filter(User.name == 'ed').scalar())
+        print('scalar():', time.time() - check_time)
+        # 2개 이상의 record가 있다면? -> sqlalchemy.orm.exc.MultipleResultsFound: Multiple rows were found for one()
+        # print(session.query(User).scalar())
+        # record가 하나도 없다면? -> None
+        check_time = time.time()
+        print(session.query(User).filter(User.id == 1000).scalar())
+        print(time.time() - check_time)
+
+        # 걸리는 시간 비교 결과: first()는 생각보다 느림. 나머지는 고만고만
+
+
 if __name__ == '__main__':
     # get_list_query()
     # alias()
     # limit_and_offset()
     # filter_and_filter_by()
-    common_filter_op()
+    # common_filter_op()
+    scalars()
